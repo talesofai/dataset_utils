@@ -42,7 +42,7 @@ class HFTarsClient:
         self.collection = self.mongo_client.get_collection(self.db_name, self.collection_name)
         self.logger.info(f"已连接到集合: {self.db_name}.{self.collection_name}")
 
-    def get_tar_url_by_id(self, tar_id: Union[str, int]) -> Optional[str]:
+    def get_tar_urls_by_id(self, tar_id: Union[str, int]) -> Optional[str]:
         """
         根据 ID 获取 tar 文件 URL
 
@@ -55,18 +55,18 @@ class HFTarsClient:
         tar_id = int(tar_id)
 
         # 查找文档
-        doc = self.collection.find_one({"_id": tar_id})
-        if not doc:
+        docs = self.collection.find({"id": tar_id})
+        if not docs:
             self.logger.warning(f"未找到 ID 为 {tar_id} 的 tar 文件记录")
-            return None
+            return []
 
         # 返回 URL
-        url = doc.get("url")
-        if not url:
+        urls = [doc.get("url") for doc in docs]
+        if not urls:
             self.logger.warning(f"ID 为 {tar_id} 的记录没有 URL 字段")
-            return None
+            return []
 
-        return url
+        return urls
 
     def get_tar_url_by_key(self, key: int) -> Optional[str]:
         """

@@ -31,7 +31,7 @@ def convert(
     padding_color: Tuple[int, int, int] = (255, 255, 255),
     format: Optional[str] = None,
     quality: int = 85,
-    resampling: int = Image.LANCZOS,
+    resampling: int = Image.BICUBIC,
     optimize: bool = True,
     keep_exif: bool = True,
     progressive: bool = True,
@@ -50,7 +50,7 @@ def convert(
         padding_color: 填充颜色 (R, G, B)
         format: 输出格式，如'WEBP', 'JPEG', 'PNG'等，如果为None则保持原格式
         quality: 图像质量(1-100)，用于JPEG和WEBP格式
-        resampling: 重采样方法，如 Image.LANCZOS, Image.BICUBIC等
+        resampling: 重采样方法，如 Image.BICUBIC, Image.BICUBIC等
         optimize: 是否优化输出文件大小
         keep_exif: 是否保留EXIF元数据
         progressive: 是否使用渐进式保存（仅JPEG有效）
@@ -166,7 +166,7 @@ def resize_by_short_edge(
     image: Image.Image,
     size: int,
     only_shrink: bool = True,
-    resampling: int = Image.LANCZOS
+    resampling: int = Image.BICUBIC
 ) -> Image.Image:
     """
     根据短边尺寸调整图像大小，保持宽高比
@@ -208,10 +208,10 @@ def convert_to_webp(
     size: Optional[int] = None,
     quality: int = 85,
     only_shrink: bool = True,
-    resampling: int = Image.LANCZOS,
+    resampling: int = Image.BICUBIC,
     optimize: bool = True,
     keep_exif: bool = True,
-    method: int = 4  # WebP编码质量/速度权衡，0(最快)到6(最佳质量)
+    method: int = 6  # WebP编码质量/速度权衡，0(最快)到6(最佳质量)
 ) -> Optional[str]:
     """
     将单个图像转换为WebP格式
@@ -452,7 +452,7 @@ def batch_convert_to_webp(
     progress_update_interval: float = 2.0,
     supported_formats: Set[str] = {'.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.tif', '.webp'},
     only_shrink: bool = True,
-    resampling: int = Image.LANCZOS,
+    resampling: int = Image.BICUBIC,
     optimize: bool = True,
     keep_exif: bool = True,
     method: int = 4,
