@@ -12,7 +12,8 @@ logger = setup_logger(__name__, LOG_LEVEL_INT)
 def extract(
     tar_path: str,
     target_dir: Optional[str] = None,
-    extract_base_dir: str = "./extracted_files"
+    extract_base_dir: str = "./extracted_files",
+    remove_tar: bool = False,
 ) -> Optional[str]:
     """
     解压 tar 文件的纯函数实现
@@ -67,4 +68,9 @@ def extract(
                 shutil.copy2(item_path, target_path)
 
     logger.info(f"解压完成: {target_dir}")
+
+    if remove_tar:
+        os.remove(tar_path)
+        logger.info(f"已删除 tar 文件: {tar_path}")
+
     return target_dir
