@@ -107,8 +107,6 @@ class HFTarsClient:
         Returns:
             tar 文件 URL，如果不存在则返回 None
         """
-        tar_id = int(tar_id)
-
         # 查找文档
         doc = self.collection.find_one({"_id": _id})
         if not doc:
