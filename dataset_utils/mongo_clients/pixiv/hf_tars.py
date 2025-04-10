@@ -96,3 +96,29 @@ class HFTarsClient:
         """关闭资源"""
         if self.owns_client:
             self.mongo_client.close()
+
+    def get_tar_url_by_default_id(self, _id: Union[str, int]) -> Optional[str]:
+        """
+        根据 ID 获取 tar 文件 URL
+
+        Args:
+            tar_id: tar 文件 ID
+
+        Returns:
+            tar 文件 URL，如果不存在则返回 None
+        """
+        tar_id = int(tar_id)
+
+        # 查找文档
+        doc = self.collection.find_one({"_id": _id})
+        if not doc:
+            self.logger.warning(f"未找到 ID 为 {_id} 的 tar 文件记录")
+            return None
+
+        # 返回 URL
+        url = doc.get("url")
+        if not url:
+            self.logger.warning(f"ID 为 {_id} 的记录没有 URL 字段")
+            return None
+
+        return url
